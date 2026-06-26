@@ -38,7 +38,7 @@ public class LocationServiceImpl implements LocationService{
                 DRIVER_GEO_OPS_KEY,
                 new RedisGeoCommands.GeoLocation<String>(
                         driverId.toString(),
-                        new Point(latitude,longitude)));
+                        new Point(longitude,latitude)));  //x,y
         return true;
     }
 
@@ -62,7 +62,7 @@ public class LocationServiceImpl implements LocationService{
         GeoResults< RedisGeoCommands.GeoLocation<String>> results =
                 geoOps.search(
                         DRIVER_GEO_OPS_KEY,
-                        GeoReference.fromCoordinate(latitude,longitude),
+                        GeoReference.fromCoordinate(longitude,latitude), //x,y
                         radius,
                         RedisGeoCommands.GeoSearchCommandArgs.newGeoSearchArgs()
                                 .includeCoordinates()
@@ -77,11 +77,8 @@ public class LocationServiceImpl implements LocationService{
                     NearbyDriverRESPONSEdto.builder()
                         .driverId(result.getContent().getName())
                         .distance(result.getDistance().getValue())
-                        .currentLocation(
-                                ExactLocation.builder()
-                                     .latitude(result.getContent().getPoint().getX())
-                                     .longitude(result.getContent().getPoint().getY())
-                                .build())
+                            .longitude(result.getContent().getPoint().getX())
+                            .latitude(result.getContent().getPoint().getY())
                     .build());
         }
 

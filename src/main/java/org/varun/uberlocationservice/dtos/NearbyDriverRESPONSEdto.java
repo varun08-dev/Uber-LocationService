@@ -2,6 +2,7 @@ package org.varun.uberlocationservice.dtos;
 
 
 import lombok.*;
+import org.springframework.data.geo.Point;
 import org.varun.uberentityservice.Models.ExactLocation;
 
 @Getter
@@ -15,5 +16,7 @@ public class NearbyDriverRESPONSEdto {
 
     private Double distance;
 
-    private ExactLocation currentLocation;
+    private Double longitude;
+
+    private Double latitude;
 }
