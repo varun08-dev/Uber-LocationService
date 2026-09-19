@@ -1,12 +1,13 @@
 package org.varun.uberlocationservice.Services;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.GeoOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.domain.geo.GeoReference;
 import org.springframework.stereotype.Service;
-import org.varun.uberentityservice.Models.ExactLocation;
 import org.varun.uberlocationservice.dtos.NearbyDriverRESPONSEdto;
 
 import java.util.ArrayList;
@@ -17,11 +18,20 @@ import java.util.List;
 @Service
 public class LocationServiceImpl implements LocationService{
 
-    private StringRedisTemplate redisTemplate;
+   // private StringRedisTemplate redisTemplate;
 
-    public LocationServiceImpl(StringRedisTemplate redisTemplate) {
+    private final RedisTemplate<String, String> redisTemplate;
+
+    public LocationServiceImpl(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
+
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Injected Bean: " + redisTemplate.getClass());
+    }
+
 
     private static final String DRIVER_GEO_OPS_KEY="drivers";
     private static final Double SEARCH_RADIUS=5.0;
